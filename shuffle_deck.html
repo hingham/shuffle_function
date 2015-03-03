@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <title>Shuffle Function</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+
+</head>
+<body>
+<div class="wrapper">
+  <section class= "introduction">  
+
+    <header> Shuffle Function </header>
+
+      <h1> Yates Function </h1>
+        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Fisher Yates shuffle function, first published in 1938 in <i> Statistic tables for biologial, agricultural and medical research </i> is an algorithm that randomly shuffles a data set. For more information on this particular shuffle algoritim, visit the <a href=" http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle" > Fisher-Yates Shuffle </a> wikipedia page. The following describes how the funtion generates the random list: </p>
+    
+    <section class="wikiExplanation">
+      <ol>
+        <li> Write the data elements in an ordered list where each number is assigned a position 1 -- m, with the number at position m being that last element in the set.</li>
+        <li> Pick a random number, k, between the 1 and (m-1).</li>
+        <li> Select the k<sup>th</sup> element, and switch it with the element in position m.</li>
+        <li> Next, pick a random number between 1 and (m-2) and switch it with the element at position (m-1).</li>
+        <li> Continue moving through the next until elements at positions 1 -- m have been replaced. </li>
+        <li> The sequence of elements is now a random permutation of the original elements. </li>
+      </ol>
+
+    </section>
+
+  </section>
+
+  <section class="deck_layout">
+    <button id="shuffle"> Begin Shuffle </button>
+    <ul class="deck_layout" id="deck">
+    </ul>
+  </section>
+
+  <section class="introduction">
+    <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The model above demonstrates the Fisher Yates shuffle performed on a deck of cards using a javascript function. The card at position m (yellow) is selected and swapped with the card (red) at a random position. Once the red card has replaced the yellow card, the function moves to the next card in the sequence and repeats the same procedure. When the deck has turned completely red, meaning each card at position m has been replaced with a card radomly selected from the remaining deck, the deck has been shuffled. </p>
+  </section>
+
+</div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    function Card(r, s) {
+      this.rank = r; 
+      this.suit = s;
+      this.toHTML = function() {
+        return "<li class='box'>" + this.rank + "-" + this.suit + " " + "</li>";
+      }
+    }
+
+    function Deck() {
+      var thisDeck = this;
+      this.suits = ['H', 'C', 'D', 'S'];
+      this.ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+      $.each(thisDeck.suits, function() {
+        var suit = this;
+        $.each(thisDeck.ranks, function() {
+          var rank = this;
+          var card = new Card(rank, suit);
+          $('#deck').append(card.toHTML());
+        });
+      });
+    }
+ 
+   var shuffle = function(m) {
+     var rand, $rand
+      rand = Math.floor(Math.random() * m--);
+      console.log("Random number = " + rand);
+      console.log("M = " + m);
+        $('li.box').removeClass('orderedCard');
+        $('li.box:eq(' + rand + ')').addClass('randomCard');
+        $('li.box:eq(' + m + ')').addClass('orderedCard'); 
+
+        $('li.box:eq(' + m + ')').
+          after($('li.box:eq(' + rand + ')')).
+          insertBefore($('li.box:eq(' + rand + ')'));      
+
+    if(m) {
+       setTimeout(shuffle, 1000, m);
+        } 
+      }
+            
+    var deck = new Deck();
+    console.log($('.box').length);
+    shuffle($('.box').length);
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
